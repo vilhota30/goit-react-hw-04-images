@@ -1,7 +1,7 @@
-import {Componenet} from "react";
+import {Component} from "react";
 import {Button, Form, Header, Input, Label} from "./Searchbar.styled";
 
-export default class Searchbar extends Componenet {
+export default class Searchbar extends Component {
     
     state = {
         query: '',
@@ -18,9 +18,13 @@ export default class Searchbar extends Componenet {
         
         if(!query.trim()) {
             return (
-                "Please, enter some data"
+                'Please, enter some data'
             );
         }
+
+    onSubmit(query);
+    this.resetForm();
+
     }
 
     resetForm = () => {
@@ -33,6 +37,7 @@ export default class Searchbar extends Componenet {
     render () {
 
         const {query} = this.state;
+
         return (
             <Header>
                 <Form onSubmit={this.onSubmit}>
@@ -46,7 +51,7 @@ export default class Searchbar extends Componenet {
                     type="text"
                     autoComplete="off"
                     autoFocus
-                    value="query"
+                    value={query}
                     placeholder="Search images and photos"
                     onChange={this.onChange}
                     />

@@ -43,6 +43,10 @@ color: white;
 }
 `;
 
+export const Label = styled.span`
+  font-weight: 700;
+`;
+
 export const Input = styled.input`
 display: inline-block;
 width; 100%;

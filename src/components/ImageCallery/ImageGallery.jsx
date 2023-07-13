@@ -23,8 +23,8 @@ ImageGallery.propTypes = {
         PropTypes.shape({
             id: PropTypes.number.isRequired,
             tag: PropTypes.string,
-            smallImage: PropTypes.string.isRequired,
-            largeImage: PropTypes.string.isRequired,
+            smallImage: PropTypes.string,
+            largeImage: PropTypes.string,
         }),
     ).isRequired,
     openModal: PropTypes.func.isRequired,

@@ -3,7 +3,7 @@ import { LoadMore } from "./Button.styled";
 
 export default function Button({ onLoadMore}) {
     return(
-        <div style={{margin: "0 auto"}}>
+        <div style={{margin: '0 auto'}}>
             <LoadMore type="button" onClick={onLoadMore}>
                Load more
             </LoadMore>
