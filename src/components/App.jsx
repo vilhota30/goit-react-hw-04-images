@@ -6,11 +6,13 @@ import Modal from "./Modal/Modal";
 import Loader from "./Loader/Loader";
 import ImageGallery from "./ImageCallery/ImageGallery";
 import Button from "./Button/Button";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export class App extends Component {
   state = {
     query: '',
-    page: 1,
+    page: 0,
     images: [],
     imagesOnPage: 0,
     totalImages: 0,
@@ -23,31 +25,55 @@ export class App extends Component {
 
   imageLimit = 12;
 
-  async componentDidUpdate (_, prevState) {
-    if (prevState.query !== this.state.query || prevState.page !== this.state.page) {
-      await this.loadImages(this.state.query);
-    }
-  }
+   async componentDidUpdate (_, prevState) {
+      if (prevState.query !== this.state.query || prevState.page !== this.state.page) {
+       await this.loadImages(this.state.query);
+     }
+   }
 
-  loadImages = async (query) => {
-    try {
-      const {hits, total} = await fetchAPI(query, this.state.page);
-      if (hits.length === 0 ) {
-        return "Sorry but there is not data for this search"
+   loadImages = async (query) => {
+     try {
+       const {hits, total} = await fetchAPI(query, this.state.page);
+      //  if (hits.length === 0 ) {
+      //    return (` Sorry, but there is no data for ${query}`);
+      //  }
+      if (hits.length === 0) {
+        return toast.error(`Sorry, but there is no data for '${query}'`, {
+          className: 'toast-message', colored: 'red'
+        });
       }
 
-      this.setState(prevState => ({
-        images: [...prevState.images, ...hits],
-        imagesOnPage: prevState.imagesOnPage + hits.length,
-        totalImages: total,
-      }));
-  } catch (error) {
-  this.setState({error}) 
-} finally {
-  this.setState({isLoading: false})
-}
+       this.setState(prevState => ({
+         images: [...prevState.images, ...hits],
+         imagesOnPage: prevState.imagesOnPage + hits.length,
+         totalImages: total,
+       }));
+   } catch (error) {
+   this.setState({error}) 
+ } finally {
+   this.setState({isLoading: false})
+ }
  
-};
+ };
+
+// loadImages = async (query) => {
+//   try {
+//     const { hits, total } = await fetchAPI(query, this.state.page);
+//      if (hits.length === 0) {
+//        return (` Sorry, but there is no data for ${query}`);
+//      }
+
+//     this.setState(prevState => ({
+//       images: [...prevState.images, ...hits],
+//       imagesOnPage: prevState.imagesOnPage + hits.length,
+//       totalImages: total,
+//     }));
+//   } catch (error) {
+//     this.setState({ error })
+//   } finally {
+//     this.setState({ isLoading: false })
+//   }
+// };
 
 getResult = (query) => {
   this.setState({
@@ -66,7 +92,7 @@ getResult = (query) => {
 };
 
 onLoadMore = () => {
-  this.setState(({page}) => ({page: page +1 }));
+  this.setState(({page}) => ({page: page + 1 }));
 };
 
 onToggleModal = () => {
@@ -77,7 +103,7 @@ onOpenModal = event => {
   const currentImageUrl = event.target.dataset.large;
   const currentImageTag = event.target.alt;
 
-  if (event.target.dataName === 'IMG') {
+  if (event.target.nodeName === 'IMG') {
     this.setState(({showModal}) => ({
       showModal: !showModal,
       currentImageUrl: currentImageUrl,
@@ -102,11 +128,10 @@ render () {
 
       {images && <ImageGallery images={images} openModal={onOpenModal} />}
 
-      {imagesOnPage >= this.imagesLimit && imagesOnPage < totalImages && (
+      {imagesOnPage < totalImages && ( 
         <Button onLoadMore={onLoadMore} />
       )}
 
-      
       {showModal && (
         <Modal 
            onClose={onToggleModal}
@@ -114,6 +139,7 @@ render () {
            currentImageTag={currentImageTag}
         />
       )}
+      <ToastContainer />
     </GroupLayout>
   );
       }

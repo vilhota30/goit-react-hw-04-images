@@ -1,8 +1,7 @@
 import React, {Component} from "react";
 import {createPortal} from "react-dom";
 import {CloseButton, ModalWindow, Backdrop} from "./Modal.styled";
-
-// const modalRoot = document.querySelector('#modal-root');
+import {GoXCircle} from "react-icons/go"
 
 
 export default class Modal extends Component {
@@ -35,7 +34,9 @@ render () {
               <CloseButton
                 type="button"
                 onClick={onClose}
+                
               >
+               <GoXCircle style={{ fontSize: '30px',  }} />
               </CloseButton>
                  <img
                    src={currentImageUrl}
@@ -44,8 +45,8 @@ render () {
                  />
            </ModalWindow>
         </Backdrop>,
-        document.querySelector('#modal-root')
-        // modalRoot,
+        document.querySelector('#modal-root'),
+        
     );
 }
 

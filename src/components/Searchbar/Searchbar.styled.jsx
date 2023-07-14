@@ -5,7 +5,7 @@ display: flex;
 justify-content: center;
 align-items: center;
 padding: 12px 24px;
-color: green;
+background-color: green;
 box-shadow: 2px 6px 10px 2px rgba(0, 0, 0, 0.4);
 top: 0;
 left: 0;
@@ -19,27 +19,28 @@ align-items: center;
 justify-content: center;
 width: 100%;
 max-width: 800px;
-background-color: whitesmoke;
+background-color: mediumseagreen;
 border-radius: 3px;
 border-color: black;
+box-shadow: 2px 4px 4px 2px rgba(0, 0, 0, 0.4);
 &&:hover {
     border-color: white;
-    box-shadow: 2px 4px 4px 2px rgba(0, 0, 0, 0.4);
+    
 }
 `;
 
 export const Button = styled.button`
 display: inline-block;
-width: 60px;
-height: 40px;
-background-color: white;
+width: 80px;
+height: 60px;
+background-color: lawngreen;
 color: darkgreen;
-border: 3px solid black; 
+border: 3px solid green; 
 cursor: pointer;
 outline: none;
 &&:hover {
 background-color: darkgreen;
-color: white;
+color: lawngreen;
 }
 `;
 
@@ -52,9 +53,13 @@ display: inline-block;
 width; 100%;
 height: 30px;
 font-size: 24px;
+outline: none;
+color: lawngreen;
 border: 3px solid darkgreen;
+background-color: mediumseagreen;
 padding: 12px 14px;
 &&:hover {
-border: 3px solid white;
+  background-color: darkgreen;
+  border: 3px solid lawngreen;
 }
 `;

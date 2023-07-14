@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import {Li, Image} from "./ImageGalleryItem.styled";
 
-export default function ImageGalleryItem({tag, smallImage, largeImage, openModal,}) {
+export default function ImageGalleryItem({tag, smallImage, largeImage, openModal}) {
     return (
         <Li onClick={openModal}>
             <Image src={smallImage} alt={tag} data-large={largeImage}/>

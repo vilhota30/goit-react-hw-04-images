@@ -9,15 +9,11 @@ height: 100vh;
 display: flex;
 justify-content: center;
 align-items: center;
-background-color: (0, 0, 0, 0.6);
-z-index: 1250;
+background-color: rgba(0.2, 0.4, 0.5, 0.6);
+z-index: 1200;
 `;
 
 export const ModalWindow = styled.div`
-// position: relative;
-// width: 600px;
-// height: 600px;
-// margin-left: 30px;
 
 position: relative;
   max-width: calc(100vw - 48px);
@@ -25,18 +21,14 @@ position: relative;
   margin-left: 20px;
 `;
 
-export const CloseButton = styled.div`
+export const CloseButton = styled.button`
 position: absolute;
 display: flex;
-padding: 4px;
-margin: 4px;
-border: 3px solid green;
+padding: 0px;
+margin: 5px;
+ border-radius: 4px;
+ border: 4px solid green;
 svg {
-    width: 30px;
-    height: 30px;
-    color: green;
-    &&:hover {
-        color: white;
-    }
+     fill: darkgreen;
 }
 `;
