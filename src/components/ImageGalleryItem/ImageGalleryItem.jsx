@@ -11,7 +11,7 @@ export default function ImageGalleryItem({tag, smallImage, largeImage, openModal
 
 ImageGalleryItem.propTypes = {
     tag: PropTypes.string,
-    smallImage: PropTypes.string.isRequired,
-    largeImage: PropTypes.string.isRequired,
+    //  smallImage: PropTypes.string.isRequired,
+    //  largeImage: PropTypes.string.isRequired,
     openModal: PropTypes.func.isRequired,
 };

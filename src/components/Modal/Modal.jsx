@@ -1,35 +1,36 @@
-import React, {Component} from "react";
+import React, {useEffect} from "react";
 import {createPortal} from "react-dom";
 import {CloseButton, ModalWindow, Backdrop} from "./Modal.styled";
 import {GoXCircle} from "react-icons/go"
 
 
-export default class Modal extends Component {
-componentDidMount () {
-    window.addEventListener('keydown', this.handleEscClick);
-};
+export default function Modal({currentImageUrl, currentImageDescription, onClose}) {
 
-componentWillUnmount () {
-    window.removeEventListener('keydown', this.handleEscClick);
-};
+useEffect(() => {
+    const handleEscClick = event => {
+        if(event.code === 'Escape') {
+            onClose();
+        }
+    };
 
-handleEscClick = event => {
-    if (event.code === 'Escape') {
-        this.props.onClose();
-    }
-};
+    window.addEventListener('keydown', handleEscClick);
 
-handleBackdrop = event =>  {
+    return () => {
+        window.removeEventListener('keydown', handleEscClick);
+
+    };
+
+}, [onClose]);
+
+
+const handleBackdrop = event =>  {
  if (event.target === event.currentTarget) {
-    this.props.onClose();
+    onClose();
  }
 };
 
-render () {
-    const {currentImageUrl, currentImageDescription, onClose} = this.props;
-
     return createPortal(
-        <Backdrop onClick={this.handleBackdrop}>
+        <Backdrop onClick={handleBackdrop}>
            <ModalWindow>
               <CloseButton
                 type="button"
@@ -48,6 +49,6 @@ render () {
         document.querySelector('#modal-root'),
         
     );
-}
+
 
 }

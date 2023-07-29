@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, {useEffect, useState} from "react";
 import { GroupLayout } from "./App.styled";
 import Searchbar from "./Searchbar/Searchbar";
 import fetchAPI from "./ServiceAPI/ServiceAPI";
@@ -9,120 +9,85 @@ import Button from "./Button/Button";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-export class App extends Component {
-  state = {
-    query: '',
-    page: 0,
-    images: [],
-    imagesOnPage: 0,
-    totalImages: 0,
-    currentImageUrl: null,
-    currentImageTag: null,
-    isLoading: false,
-    showModal: false,
-    error: null,
-  };
+export function App() {
+  
+  const [query, setQuery] = useState('');
+  const [page, setPage] = useState(1);
+  const [images, setImages] = useState([]);
+  const [imagesOnPage, setImagesOnPage] = useState(0);
+  const [totalImages, setTotalImages] = useState(0);
+  const [currentImageUrl, setCurrentImageUrl] = useState(null);
+  const [currentImageTag, setCurrentImageTag] = useState();
+  const [isLoading, setIsLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [, setError] = useState(null);
 
-  imageLimit = 12;
+  // const imageLimit = 12;
 
-   async componentDidUpdate (_, prevState) {
-      if (prevState.query !== this.state.query || prevState.page !== this.state.page) {
-       await this.loadImages(this.state.query);
-     }
-   }
+  useEffect(() => {
+    const fetchData = async() => {
+      if( !page || query.trim() === '' ) {
+        return;
+      };
 
-   loadImages = async (query) => {
-     try {
-       const {hits, total} = await fetchAPI(query, this.state.page);
-      //  if (hits.length === 0 ) {
-      //    return (` Sorry, but there is no data for ${query}`);
-      //  }
-      if (hits.length === 0) {
-        return toast.error(`Sorry, but there is no data for '${query}'`, {
-          className: 'toast-message', colored: 'red'
-        });
+      try {
+        setIsLoading(true);
+        const {hits, total} = await fetchAPI(query, page);
+        if (hits.length === 0) {
+          return toast.error(`Sorry, but there is no data for '${query}'`, {
+            className: 'toast-message', colored: 'red'
+          });
+        }
+       setImages((prevImages) => [prevImages, ...hits]);
+       setImagesOnPage((prevImagesOnPage) => prevImagesOnPage + hits.length);
+       setTotalImages(total);
+      } catch (error) {
+        setError(error);
+      } finally {
+        setIsLoading(false);
       }
+    };
 
-       this.setState(prevState => ({
-         images: [...prevState.images, ...hits],
-         imagesOnPage: prevState.imagesOnPage + hits.length,
-         totalImages: total,
-       }));
-   } catch (error) {
-   this.setState({error}) 
- } finally {
-   this.setState({isLoading: false})
- }
- 
+    fetchData().catch(e => console.log(e));
+  }, [page, query]);
+
+
+ const handleFormSubmit = (query) => {
+  setQuery(query);
+  setPage(1);
+  setImages([]);
+  setImagesOnPage(0);
+  setTotalImages(0);
+  setCurrentImageUrl(null);
+  setCurrentImageTag(null);
+  setIsLoading(false);
+  setShowModal(false);
+  setError(false);
+  console.log(query);
  };
 
-// loadImages = async (query) => {
-//   try {
-//     const { hits, total } = await fetchAPI(query, this.state.page);
-//      if (hits.length === 0) {
-//        return (` Sorry, but there is no data for ${query}`);
-//      }
 
-//     this.setState(prevState => ({
-//       images: [...prevState.images, ...hits],
-//       imagesOnPage: prevState.imagesOnPage + hits.length,
-//       totalImages: total,
-//     }));
-//   } catch (error) {
-//     this.setState({ error })
-//   } finally {
-//     this.setState({ isLoading: false })
-//   }
-// };
-
-getResult = (query) => {
-  this.setState({
-    query,
-    page: 1,
-    images:[],
-    imagesOnPage: 0,
-    totalImages: 0,
-    currentImageUrl: null,
-    currentImageTag: null,
-    isLoading: false,
-    showModal: false,
-    error: null,
-
-  });
+const onLoadMore = () => {
+  setPage(prevPage => prevPage + 1);
 };
 
-onLoadMore = () => {
-  this.setState(({page}) => ({page: page + 1 }));
+const onToggleModal = () => {
+  setShowModal(!showModal);
 };
 
-onToggleModal = () => {
-  this.setState(({showModal}) => ({showModal: !showModal}));
-};
-
-onOpenModal = event => {
-  const currentImageUrl = event.target.dataset.large;
-  const currentImageTag = event.target.alt;
-
+const onOpenModal = event => {
+  
   if (event.target.nodeName === 'IMG') {
-    this.setState(({showModal}) => ({
-      showModal: !showModal,
-      currentImageUrl: currentImageUrl,
-      currentImageTag: currentImageTag,
-    }));
+    setShowModal(!showModal);
+    setCurrentImageUrl(event.target.dataset.large);
+    setCurrentImageTag(event.target.alt);
   }
 };
 
-render () {
-  const {images, imagesOnPage, totalImages, currentImageUrl, currentImageTag, isLoading, showModal} = this.state;
-
-  const getResult = this.getResult;
-  const onLoadMore = this.onLoadMore;
-  const onOpenModal = this.onOpenModal;
-  const onToggleModal = this.onToggleModal;
 
   return (
     <GroupLayout>
-      <Searchbar onSubmit={getResult} />
+      <Searchbar onSubmit={handleFormSubmit} query={query} />
 
       {isLoading && <Loader />}
 
@@ -142,5 +107,5 @@ render () {
       <ToastContainer />
     </GroupLayout>
   );
-      }
+
 }
