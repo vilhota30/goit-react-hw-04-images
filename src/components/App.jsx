@@ -32,7 +32,7 @@ export function App() {
 
       try {
         setIsLoading(true);
-        const {hits, total} = await fetchAPI(query, page);
+        const {hits, totalHits} = await fetchAPI(query, page);
         if (hits.length === 0) {
           return toast.error(`Sorry, but there is no data for '${query}'`, {
             className: 'toast-message', colored: 'red'
@@ -40,7 +40,7 @@ export function App() {
         }
        setImages((prevImages) => [prevImages, ...hits]);
        setImagesOnPage((prevImagesOnPage) => prevImagesOnPage + hits.length);
-       setTotalImages(total);
+       setTotalImages(totalHits);
       } catch (error) {
         setError(error);
       } finally {
