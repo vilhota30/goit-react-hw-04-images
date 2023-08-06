@@ -11,7 +11,7 @@ import styled from "@emotion/styled";
  text-decoration: none;
  cursor: pointer;
  font-size: 18px;
- font-weight: 500;
+ font-weight: 800;
  min-width: 200px;
  height: 60px;
  box-shadow: 2px 2px 6px 2px rgba(0, 0, 0, 0.4);

@@ -38,7 +38,7 @@ export function App() {
             className: 'toast-message', colored: 'red'
           });
         }
-       setImages((prevImages) => [prevImages, ...hits]);
+       setImages((prevImages) => [...prevImages, ...hits]);
        setImagesOnPage((prevImagesOnPage) => prevImagesOnPage + hits.length);
        setTotalImages(totalHits);
       } catch (error) {
@@ -91,7 +91,7 @@ const onOpenModal = event => {
 
       {isLoading && <Loader />}
 
-      {images && <ImageGallery images={images} openModal={onOpenModal} />}
+      {images.length > 0 && <ImageGallery images={images} openModal={onOpenModal} />}
 
       {imagesOnPage < totalImages && ( 
         <Button onLoadMore={onLoadMore} />
