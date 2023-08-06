@@ -36,6 +36,8 @@ height: 60px;
 background-color: lawngreen;
 color: darkgreen;
 border: 3px solid green; 
+font-size: 16px;
+font-weight: 600;
 cursor: pointer;
 outline: none;
 &&:hover {
